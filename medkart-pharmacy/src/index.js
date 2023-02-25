@@ -6,8 +6,10 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
 import { AuthContextProvider } from './Context/AuthContextProvider';
+import { CartSizeContextProvider } from './Context/CartSizeContextProvider';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <CartSizeContextProvider>
   <AuthContextProvider>
   <ChakraProvider>
   <BrowserRouter>
@@ -15,6 +17,7 @@ root.render(
   </BrowserRouter>
   </ChakraProvider>
   </AuthContextProvider>
+  </CartSizeContextProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
