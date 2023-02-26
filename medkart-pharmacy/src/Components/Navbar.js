@@ -1,10 +1,16 @@
-import { Box, Button, Collapse, Flex, Icon, IconButton, Image, Link, Popover, PopoverContent, PopoverTrigger, Stack, Text, useColorModeValue, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Collapse, Flex, Icon, IconButton, Image, Link, Menu, MenuButton, MenuItem, MenuList, Popover, PopoverContent, PopoverTrigger, Stack, Text, useColorModeValue, useDisclosure } from "@chakra-ui/react";
 import { ChevronDownIcon, ChevronRightIcon, CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { Link as Redirect, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../Context/AuthContextProvider";
+import { CartSizeContext } from "../Context/CartSizeContextProvider";
+import "./Navbar.css"
 export default function Navbar(){
   const { isOpen, onToggle } = useDisclosure();
   const Navigate=useNavigate();
+  const {isAuth,Logout}=useContext(AuthContext);
+  const {CartSize}=useContext(CartSizeContext);
   return (
   <Box>
     <Flex 
@@ -28,14 +34,14 @@ export default function Navbar(){
         <Flex display={{ base: 'none', xl:'flex' }} ml={10}>
           <DesktopNav />
         </Flex>
-        <Flex>
-          <MdOutlineShoppingCart style={{fontSize:"25px",marginLeft:"20px"}}/>
+        <Flex onClick={()=>Navigate("/cart")}>
+          <MdOutlineShoppingCart style={{fontSize:"25px",marginLeft:"20px"}}/><span id="Cart-Count">{CartSize}</span>
         </Flex>
-      </Flex>
+      </Flex>{isAuth?<Flex align={'end'}><Menu><MenuButton><Text fontSize={{base:'sm',md:'md',lg:'lg',xl:'xl'}} fontWeight={'500'} marginLeft={'30px'}>{JSON.parse(localStorage.getItem("Profile"))}</Text></MenuButton><MenuList><MenuItem><Button onClick={()=>Logout()}>Logout</Button></MenuItem></MenuList></Menu></Flex>:
       <Stack flex={{ base: 1, md: 0 }} justify={'flex-end'} direction={'row'} spacing={6}>
         <Button as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'#'}><Link as={Redirect} to='/login'>Sign In</Link></Button>
         <Button as={'a'} display={{ base: 'none', md: 'inline-flex' }} fontSize={'sm'} fontWeight={600} color={'white'} bg={'pink.400'} href={'#'} _hover={{bg:'pink.300'}}>Sign Up</Button>
-      </Stack>
+      </Stack>}
     </Flex>
     <Collapse in={isOpen} animateOpacity>
       <MobileNav/>
@@ -79,10 +85,11 @@ const DesktopNav=()=>{
   </Stack>
   );
 }
-const DesktopSubNav=({ label, href })=>{
+const DesktopSubNav=({ label, to })=>{
   return (
   <Link
-  href={href}
+  as={Redirect}
+  to={to}
   role={'group'}
   display={'block'}
   p={2}
@@ -136,7 +143,7 @@ const MobileNavItem=({ label, children, href })=>{
       borderStyle={'solid'}
       borderColor={useColorModeValue('gray.200', 'gray.700')}
       align={'start'}>
-        {children && children.map((child)=>(<Link key={child.label} py={2} href={child.href}>{child.label}</Link>))}
+        {children && children.map((child)=>(<Link key={child.label} py={2} as={Redirect} to={child.to}>{child.label}</Link>))}
       </Stack>
     </Collapse>
   </Stack>
@@ -145,99 +152,99 @@ const MobileNavItem=({ label, children, href })=>{
 const NAV_ITEMS = [
   {
     label: 'Medicine',
-    href: '#'
+    to: '#'
   },
   {
     label: 'Lab Tests',
-    href: '#'
+    to: '#'
   },
   {
     label: 'Healthcare',
     children: [
       {
         label: 'Most Loved Brands',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Mega Clearance Sale',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Personal Care',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Healthcare Devices',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Health Food and Drinks',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Home Care',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Mother and Baby Care',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Diabetic Care',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Fitness Supplements',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Skin Care',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Sexual Wellness',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Accessories & Wearables',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Health Condition',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Ayurvedic Care',
-        href: '#'
+        to: '/ayurvedic-care'
       },
       {
         label: 'Elderly Care',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Top Products',
-        href: '#'
+        to: '#'
       }
     ]
   },
   {
     label: 'Surgeries',
-    href: '#'
+    to: '#'
   },
   {
     label: 'Health Blogs',
-    href: '#'
+    to: '#'
   },
   {
     label: 'PLUS',
-    href: '#'
+    to: '#'
   },
   {
     label: 'Offers',
-    href: '#'
+    to: '#'
   },
   {
     label: 'Value Store',
-    href: '#'
+    to: '#'
   }
 ];
