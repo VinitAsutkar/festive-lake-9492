@@ -1,4 +1,4 @@
-import { Button, Flex, Image, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, GridItem, Image, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -6,7 +6,7 @@ import { CartSizeContext } from "../Context/CartSizeContextProvider";
 import "./Cart.css"
 export default function Cart(){
     const [Data,SetData]=useState([]);
-    const sumWithInitial=Data.reduce((previousValue,currentValue)=>previousValue+currentValue.sellingPrice,0);
+    const sumWithInitial=Data.reduce((Accumulator,currentValue)=>Accumulator+currentValue.selling_price,0);
     const GetCartData=()=>{
         axios.get(`http://localhost:3000/cart`).then((Response)=>SetData(Response.data))
     }
@@ -18,43 +18,44 @@ export default function Cart(){
     }
     const {CartSize,CheckCartSize}=useContext(CartSizeContext);
     return (
-    <div>{!CartSize ?
-    <Flex justify={'center'} alignItems={'center'} flexDirection={'column'} gap={'50px'} marginTop={'50px'}>
-        <Image src="https://d1s24u4ln0wd0i.cloudfront.net/app/assets/empty_cart_image.svg"/>
-        <Text fontWeight={'500'}>Your Medicine/Healthcare cart is empty!</Text>
-        <Button colorScheme={'green'}><Link to="/">Add Items</Link></Button>
-    </Flex> :
-        <div id="Checkout">
-            <div id="Cart-Products">{
-                Data?.map((Item)=>(
-                    <div key={crypto.randomUUID()}>
-                        <img className="Imagediv" src={Item.image} alt="Image"/>
-                        <p>{Item.title}</p>
-                        <p>{Item.sellingPrice}</p>
-                        <button onClick={()=>RemoveCartItem(Item.id)} className="Remove">Remove</button>
-                    </div>
-                ))}
-            </div>
-            <div id="Checkout-Section">
-                <div id="Price-Details">
-                    <p>Price Details</p>
-                    <div id="Price">
-                        <p>Price (<span id="Quantity"></span> Items)</p>
-                        <p>₹<span id="Total">{sumWithInitial}</span></p>
-                    </div>
-                    <div id="Delivery-Charges">
-                        <p>Delivery Charges</p>
-                        <p>Free</p>
-                    </div>
-                    <hr/>
-                    <div id="Amount-Payable">
-                        <p>Amount Payable</p>
-                        <p>₹<span id="Total-Amount">{sumWithInitial}</span></p>
-                    </div>
-                </div>
-                <button id="Checkout-Button">Checkout</button>
-            </div>
-        </div>}
+    <div>
+        {!CartSize ?
+        <Flex justify={'center'} alignItems={'center'} flexDirection={'column'} gap={'50px'} marginTop={'50px'}>
+            <Image src="https://d1s24u4ln0wd0i.cloudfront.net/app/assets/empty_cart_image.svg"/>
+            <Text fontWeight={'500'}>Your Medicine/Healthcare cart is empty!</Text>
+            <Button colorScheme={'green'}><Link to="/">Add Items</Link></Button>
+        </Flex> :
+        <Flex justify={'space-around'} gap={5} mt={'50px'} fontFamily={'sans-serif'} direction={{base:'column',md:'row'}}>
+            <Grid flex={6} border={'1px solid silver'} gap={10} p={5}>
+                {
+                Data.map((Item)=>
+                <GridItem margin={'auto'} w={'100%'} p={5} border={'1px solid silver'}>
+                    <Image boxSize={'20%'} margin={'auto'} objectFit={'contain'} src={Item.image}/>
+                    <Text fontWeight={'semibold'} pt={5}>{Item.title}</Text>
+                    <Text p={10}>₹{Item.selling_price}</Text>
+                    <Button colorScheme={'green'} onClick={()=>RemoveCartItem(Item.id)} w={'100%'}>Remove</Button>
+                </GridItem>
+                )
+                }
+            </Grid>
+                <Box flex={3} border={'1px solid silver'} p={5}>
+                    <Text textAlign={'left'} pb={5} textTransform={'uppercase'} fontWeight={'semibold'}>Price Details</Text>
+                    <Flex justify={'space-between'} pb={5}>
+                        <Text>Price ({Data.length} Items)</Text>
+                        <Text>₹{sumWithInitial}</Text>
+                    </Flex>
+                    <Flex justify={'space-between'} pb={10}>
+                        <Text>Delivery Charges</Text>
+                        <Text textTransform={'uppercase'} color={'green'}>Free</Text>
+                    </Flex>
+                    <Flex justify={'space-between'} pb={10}>
+                        <Text fontWeight={'semibold'} textTransform={'uppercase'}>Amount Payable</Text>
+                        <Text color={'blue'}>₹{sumWithInitial}</Text>
+                    </Flex>
+                    <Button w={'100%'} colorScheme={'red'}>Checkout</Button>
+                </Box>
+        </Flex>
+        }
     </div>
     )
 }

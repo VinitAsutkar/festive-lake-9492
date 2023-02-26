@@ -85,10 +85,11 @@ const DesktopNav=()=>{
   </Stack>
   );
 }
-const DesktopSubNav=({ label, href })=>{
+const DesktopSubNav=({ label, to })=>{
   return (
   <Link
-  href={href}
+  as={Redirect}
+  to={to}
   role={'group'}
   display={'block'}
   p={2}
@@ -142,7 +143,7 @@ const MobileNavItem=({ label, children, href })=>{
       borderStyle={'solid'}
       borderColor={useColorModeValue('gray.200', 'gray.700')}
       align={'start'}>
-        {children && children.map((child)=>(<Link key={child.label} py={2} href={child.href}>{child.label}</Link>))}
+        {children && children.map((child)=>(<Link key={child.label} py={2} as={Redirect} to={child.to}>{child.label}</Link>))}
       </Stack>
     </Collapse>
   </Stack>
@@ -151,99 +152,99 @@ const MobileNavItem=({ label, children, href })=>{
 const NAV_ITEMS = [
   {
     label: 'Medicine',
-    href: '#'
+    to: '#'
   },
   {
     label: 'Lab Tests',
-    href: '#'
+    to: '#'
   },
   {
     label: 'Healthcare',
     children: [
       {
         label: 'Most Loved Brands',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Mega Clearance Sale',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Personal Care',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Healthcare Devices',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Health Food and Drinks',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Home Care',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Mother and Baby Care',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Diabetic Care',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Fitness Supplements',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Skin Care',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Sexual Wellness',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Accessories & Wearables',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Health Condition',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Ayurvedic Care',
-        href: '#'
+        to: '/ayurvedic-care'
       },
       {
         label: 'Elderly Care',
-        href: '#'
+        to: '#'
       },
       {
         label: 'Top Products',
-        href: '#'
+        to: '#'
       }
     ]
   },
   {
     label: 'Surgeries',
-    href: '#'
+    to: '#'
   },
   {
     label: 'Health Blogs',
-    href: '#'
+    to: '#'
   },
   {
     label: 'PLUS',
-    href: '#'
+    to: '#'
   },
   {
     label: 'Offers',
-    href: '#'
+    to: '#'
   },
   {
     label: 'Value Store',
-    href: '#'
+    to: '#'
   }
 ];
